@@ -1,22 +1,60 @@
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: #2C3E50;
+  font-family: 'Quicksand', 'Roboto', Arial, sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+  min-height: 100vh;
 }
 
 .main-container {
-  background-color: #ECF0F1;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  margin-top: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 32px 24px 24px 24px;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  margin-top: 60px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: box-shadow 0.3s;
 }
 
-button {
-  background-color: #000000 !important;
-  color: white !important;
+.main-container:hover {
+  box-shadow: 0 16px 40px rgba(44, 62, 80, 0.22);
 }
 
-button:hover {
-  background-color: #767879 !important;
+button, .MuiButton-root {
+  background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%) !important;
+  color: #222 !important;
+  font-weight: 600;
+  border-radius: 20px !important;
+  box-shadow: 0 2px 8px rgba(0, 201, 255, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+button:hover, .MuiButton-root:hover {
+  background: linear-gradient(90deg, #92FE9D 0%, #00C9FF 100%) !important;
+  box-shadow: 0 4px 16px rgba(0, 201, 255, 0.18);
+}
+
+input, .MuiTextField-root {
+  border-radius: 12px !important;
+  background: #f7fafc !important;
+}
+
+.welcome-message {
+  text-align: center;
+  color: #007BFF;
+  font-size: 1.3rem;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.loading-indicator {
+  text-align: center;
+  color: #00C9FF;
+  font-size: 1.2rem;
+  margin-top: 32px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
