@@ -1,0 +1,156 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 300px;
+}
+
+.error-card {
+  max-width: 500px;
+  padding: 2.5rem;
+  text-align: center;
+  color: white;
+  animation: slideUp 0.5s ease-out;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.error-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.error-suggestions {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.suggestion-text {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestion-list li {
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.suggestion-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.suggestion-list li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .error-container {
+    padding: 1rem;
+  }
+  
+  .error-card {
+    padding: 2rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+  }
+  
+  .error-title {
+    font-size: 1.25rem;
+  }
+  
+  .error-message {
+    font-size: 1rem;
+  }
+  
+  .error-suggestions {
+    padding: 1rem;
+  }
+  
+  .suggestion-text {
+    font-size: 0.9rem;
+  }
+  
+  .suggestion-list li {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-card {
+    padding: 1.5rem;
+  }
+  
+  .error-icon {
+    font-size: 2.5rem;
+  }
+  
+  .error-title {
+    font-size: 1.1rem;
+  }
+  
+  .error-message {
+    font-size: 0.9rem;
+  }
+  
+  .error-suggestions {
+    padding: 0.875rem;
+  }
+  
+  .suggestion-list li {
+    font-size: 0.75rem;
+    padding-left: 1.25rem;
+  }
+} 

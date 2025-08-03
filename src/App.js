@@ -1,125 +1,119 @@
-import React, { useState } from "react";
-import { Container, TextField, Button, Grid, Typography } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import WeatherCard from "./weathercard";
-import './App.css';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#007BFF",
-    },
-    background: {
-      default: "#2C3E50",
-    },
-  },
-  typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
-    h3: {
-      fontWeight: 500,
-      color: "#000000",
-    },
-    body1: {
-      fontSize: "1rem",
-    },
-  },
-  components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#fff",
-          borderRadius: "4px",
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-          borderRadius: "4px",
-        },
-      },
-    },
-  },
-});
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import WeatherCard from "./components/WeatherCard";
+import SearchBar from "./components/SearchBar";
+import LoadingSpinner from "./components/LoadingSpinner";
+import ErrorMessage from "./components/ErrorMessage";
 
 function App() {
-  const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
-  const [hourlyForecast, setHourlyForecast] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState("");
 
-  const handleChange = (event) => {
-    setCity(event.target.value);
-  };
+  const API_KEY = "117b3d6963142e46c13a0ef2ab4bb41d"; // Replace with your actual API key
+  const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (city.trim() !== "") {
-      try {
-        const weatherResponse = await fetchWeather(city);
-        const forecastResponse = await fetchHourlyForecast(city);
+  const fetchWeatherData = async (city) => {
+    setLoading(true);
+    setError(null);
 
-        setWeatherData(weatherResponse);
-        setHourlyForecast(forecastResponse.list);
-      } catch (error) {
-        console.error("Error fetching weather:", error);
+    try {
+      // Fetch current weather
+      const weatherResponse = await fetch(
+        `${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric`
+      );
+
+      if (!weatherResponse.ok) {
+        throw new Error("City not found. Please try again.");
       }
-    } else {
-      alert("Please enter a city name.");
+
+      const weather = await weatherResponse.json();
+
+      setWeatherData(weather);
+      setCurrentLocation(city);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const fetchWeather = async (city) => {
-    const apiKey = "117b3d6963142e46c13a0ef2ab4bb41d"; 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data;
+  const handleSearch = (city) => {
+    if (city.trim()) {
+      fetchWeatherData(city);
+    }
   };
 
-  const fetchHourlyForecast = async (city) => {
-    const apiKey = "117b3d6963142e46c13a0ef2ab4bb41d"; 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data;
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            const response = await fetch(
+              `${BASE_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+            );
+            const data = await response.json();
+            setWeatherData(data);
+            setCurrentLocation(data.name);
+          } catch (err) {
+            setError("Unable to get weather for your location.");
+          } finally {
+            setLoading(false);
+          }
+        },
+        () => {
+          setError("Unable to get your location. Please search for a city.");
+          setLoading(false);
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by your browser.");
+    }
   };
+
+  useEffect(() => {
+    // Set default city on app load
+    fetchWeatherData("London");
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="sm" className="main-container">
-        <Typography variant="h3" align="center" gutterBottom>
-          Weather App
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} sm={8}>
-              <TextField
-                fullWidth
-                id="cityInput"
-                label="Enter city name"
-                variant="outlined"
-                value={city}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Button
-                fullWidth
-                variant="contained"
-                type="submit"
-                color="primary"
-              >
-                Get Weather
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-        {weatherData && (
-          <WeatherCard weather={weatherData} hourlyForecast={hourlyForecast} />
-        )}
-      </Container>
-    </ThemeProvider>
+    <div className="App">
+      <div className="app-container">
+        <header className="app-header">
+          <div className="header-content">
+            <h1 className="app-title">
+              <span className="weather-icon">🌤️</span>
+              Weather App
+            </h1>
+            <p className="app-subtitle">Get real-time weather updates</p>
+          </div>
+        </header>
+
+        <main className="app-main">
+          <SearchBar
+            onSearch={handleSearch}
+            onLocationClick={getCurrentLocation}
+          />
+
+          {loading && <LoadingSpinner />}
+
+          {error && <ErrorMessage message={error} />}
+
+          {weatherData && !loading && !error && (
+            <div className="weather-content">
+              <WeatherCard weather={weatherData} location={currentLocation} />
+            </div>
+          )}
+        </main>
+
+        <footer className="app-footer">
+          <p>© 2024 Weather App. Built with React & OpenWeatherMap API</p>
+        </footer>
+      </div>
+    </div>
   );
 }
 
