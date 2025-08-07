@@ -123,21 +123,6 @@ function App() {
 
   return (
     <>
-      <style>
-        {`
-          body {
-            background: ${backgroundStyle.background} !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            min-height: 100vh !important;
-            width: 100% !important;
-          }
-        `}
-      </style>
       <div className="App" style={{
         position: 'relative',
         minHeight: '100vh',
