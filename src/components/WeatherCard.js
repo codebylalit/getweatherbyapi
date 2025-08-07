@@ -9,17 +9,15 @@ const WeatherCard = ({ weather, location, forecast }) => {
     return weatherIcons[weatherCode] || '🌤️';
   };
 
-  const getWeatherDescription = (description) => {
-    return description.charAt(0).toUpperCase() + description.slice(1);
-  };
+  const getWeatherDescription = (description) =>
+    description.charAt(0).toUpperCase() + description.slice(1);
 
-  const formatTime = (timestamp) => {
-    return new Date(timestamp * 1000).toLocaleTimeString('en-US', {
+  const formatTime = (timestamp) =>
+    new Date(timestamp * 1000).toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false
     });
-  };
 
   const calculateDayLength = (sunrise, sunset) => {
     const sunriseTime = new Date(sunrise * 1000);
@@ -30,19 +28,17 @@ const WeatherCard = ({ weather, location, forecast }) => {
     return `${diffHours} h ${diffMinutes} m`;
   };
 
-  const formatDate = (timestamp) => {
-    return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+  const formatDate = (timestamp) =>
+    new Date(timestamp * 1000).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-  };
 
   // Forecast grouping for 7 days
   let forecastDays = [];
   if (forecast && forecast.list) {
-    console.log('Forecast data received:', forecast);
     const dailyForecast = forecast.list.reduce((acc, item) => {
       const date = new Date(item.dt * 1000).toDateString();
       if (!acc[date]) {
@@ -53,7 +49,7 @@ const WeatherCard = ({ weather, location, forecast }) => {
           weather: item.weather[0],
           humidity: item.main.humidity,
           windSpeed: item.wind.speed,
-          pop: item.pop * 100, // Probability of precipitation
+          pop: item.pop * 100 // Probability of precipitation
         };
       } else {
         acc[date].tempMin = Math.min(acc[date].tempMin, item.main.temp_min);
@@ -65,10 +61,7 @@ const WeatherCard = ({ weather, location, forecast }) => {
       return acc;
     }, {});
     forecastDays = Object.values(dailyForecast).slice(0, 7);
-    console.log('Processed forecast days:', forecastDays);
   } else {
-    console.log('No forecast data available');
-    // Don't create fallback data - just show empty forecast
     forecastDays = [];
   }
 
@@ -77,15 +70,13 @@ const WeatherCard = ({ weather, location, forecast }) => {
       <div className="wcf-header">
         <div className="wcf-header-left">
           <div className="wcf-date-time">{formatDate(weather.dt)}</div>
-          <div className="wcf-weather-desc">{getWeatherDescription(weather.weather[0].description)} {Math.round(weather.main.temp)}°C</div>
+          <div className="wcf-weather-desc">{getWeatherDescription(weather.weather[0].description)} {Math.round(weather.main.temp)}&deg;C</div>
           <div className="wcf-location">{location}</div>
         </div>
         <div className="wcf-header-right">
           <span className="wcf-icon">{getWeatherIcon(weather.weather[0].icon)}</span>
         </div>
       </div>
-
-      {/* Sunrise/Sunset Bar */}
       {weather.sys && (
         <div className="wcf-pill-bar wcf-dark-bar">
           <span className="wcf-pill-icon">🌅</span>
@@ -95,34 +86,10 @@ const WeatherCard = ({ weather, location, forecast }) => {
           <span className="wcf-pill-icon">🌇</span>
         </div>
       )}
-
-      {/* Rain Bar
-      {weather.rain && (
-        <div className="wcf-pill-bar wcf-dark-bar wcf-rain-bar">
-          <span className="wcf-pill-icon">🌧️</span>
-          <span className="wcf-pill-label">Rain: {Math.round((weather.rain['1h'] || weather.rain['3h'] || 0) * 100)}%</span>
-        </div>
-      )}
-      {weather.snow && (
-        <div className="wcf-pill-bar wcf-dark-bar wcf-rain-bar">
-          <span className="wcf-pill-icon">❄️</span>
-          <span className="wcf-pill-label">Snow: {Math.round((weather.snow['1h'] || weather.snow['3h'] || 0) * 100)}%</span>
-        </div>
-      )}
-      {!weather.rain && !weather.snow && weather.clouds && weather.clouds.all > 50 && (
-        <div className="wcf-pill-bar wcf-dark-bar wcf-rain-bar">
-          <span className="wcf-pill-icon">☁️</span>
-          <span className="wcf-pill-label">Clouds: {weather.clouds.all}%</span>
-        </div>
-      )} */}
-
-      {/* Main Temperature */}
       <div className="wcf-temp-main">
-        <span className="wcf-temp">{Math.round(weather.main.temp)}°C</span>
-        <span className="wcf-minmax">Min: {Math.round(weather.main.temp_min)}° Max: {Math.round(weather.main.temp_max)}°</span>
+        <span className="wcf-temp">{Math.round(weather.main.temp)}&deg;C</span>
+        <span className="wcf-minmax">Min: {Math.round(weather.main.temp_min)}&deg; Max: {Math.round(weather.main.temp_max)}&deg;</span>
       </div>
-
-      {/* Stats Row */}
       <div className="wcf-stats-row">
         <span className="wcf-stat">Humidity: {weather.main.humidity}%</span>
         <span className="wcf-stat">Wind: {Math.round(weather.wind.speed)} km/h</span>
@@ -130,8 +97,6 @@ const WeatherCard = ({ weather, location, forecast }) => {
           <span className="wcf-stat">Pressure: {weather.main.pressure} hPa</span>
         )}
       </div>
-
-      {/* 7-Day Forecast Row */}
       {forecastDays.length > 0 ? (
         <div className="wcf-forecast-row">
           {forecastDays.map((day, idx) => {
@@ -145,8 +110,8 @@ const WeatherCard = ({ weather, location, forecast }) => {
                 <div className="wcf-forecast-day">{isToday ? 'Today' : getDayName(day.date)}</div>
                 <div className="wcf-forecast-icon">{getWeatherIcon(day.weather.icon)}</div>
                 <div className="wcf-forecast-temp">
-                  <span className="wcf-temp-max">{Math.round(day.tempMax)}°</span>
-                  <span className="wcf-temp-min">{Math.round(day.tempMin)}°</span>
+                  <span className="wcf-temp-max">{Math.round(day.tempMax)}&deg;</span>
+                  <span className="wcf-temp-min">{Math.round(day.tempMin)}&deg;</span>
                 </div>
               </div>
             );

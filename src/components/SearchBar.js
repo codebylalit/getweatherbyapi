@@ -39,7 +39,6 @@ const SearchBar = ({ onSearch, onLocationClick }) => {
             </svg>
           </button>
         </div>
-        
         <button
           type="button"
           onClick={handleLocationClick}
