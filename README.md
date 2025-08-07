@@ -2,8 +2,7 @@
 
 A beautiful, modern weather application built with React that provides real-time weather information with an excellent user experience.
 
-## ✨ Features
-
+## ✨ Features 
 - **🌍 Real-time Weather Data** - Get current weather conditions for any city
 - **📍 Location Detection** - Use your current location for instant weather updates
 - **📅 5-Day Forecast** - Detailed weather predictions for the next 5 days
