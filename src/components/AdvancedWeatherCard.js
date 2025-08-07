@@ -7,17 +7,12 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
   // Generate hourly forecast for next 24 hours
   const getHourlyForecast = () => {
     if (!forecastData || !forecastData.list) return [];
-    
     return forecastData.list.slice(0, 8).map((item, index) => {
       const date = new Date(item.dt * 1000);
       const hour = date.getHours();
       const isDay = hour >= 6 && hour <= 18;
-      
       return {
-        time: date.toLocaleTimeString('en-US', { 
-          hour: 'numeric', 
-          hour12: true 
-        }),
+        time: date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
         temp: Math.round(item.main.temp),
         weatherId: item.weather[0].id,
         description: item.weather[0].description,
@@ -56,19 +51,19 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
       <div className="advanced-header">
         <h3 className="advanced-title">Advanced Weather Data</h3>
         <div className="tab-buttons">
-          <button 
+          <button
             className={`tab-button ${activeTab === 'hourly' ? 'active' : ''}`}
             onClick={() => setActiveTab('hourly')}
           >
             Hourly
           </button>
-          <button 
+          <button
             className={`tab-button ${activeTab === 'air' ? 'active' : ''}`}
             onClick={() => setActiveTab('air')}
           >
             Air Quality
           </button>
-          <button 
+          <button
             className={`tab-button ${activeTab === 'uv' ? 'active' : ''}`}
             onClick={() => setActiveTab('uv')}
           >
@@ -76,7 +71,6 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
           </button>
         </div>
       </div>
-
       <div className="advanced-content">
         {activeTab === 'hourly' && (
           <div className="hourly-forecast">
@@ -84,10 +78,8 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
               {hourlyForecast.map((hour, index) => (
                 <div key={index} className="hourly-item glass">
                   <div className="hourly-time">{hour.time}</div>
-                  <div className="hourly-icon">
-                    {getWeatherIcon(hour.weatherId, hour.isDay)}
-                  </div>
-                  <div className="hourly-temp">{hour.temp}°C</div>
+                  <div className="hourly-icon">{getWeatherIcon(hour.weatherId, hour.isDay)}</div>
+                  <div className="hourly-temp">{hour.temp}&deg;C</div>
                   <div className="hourly-details">
                     <div className="hourly-humidity">💧 {hour.humidity}%</div>
                     <div className="hourly-wind">💨 {Math.round(hour.windSpeed)} m/s</div>
@@ -97,7 +89,6 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
             </div>
           </div>
         )}
-
         {activeTab === 'air' && (
           <div className="air-quality">
             {aqData ? (
@@ -108,29 +99,25 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
                     {airQualityData.list?.[0]?.main?.aqi || 'N/A'}
                   </div>
                 </div>
-                <div className="aq-level" style={{ color: aqData.color }}>
-                  {aqData.level}
-                </div>
-                <div className="aq-description">
-                  {aqData.description}
-                </div>
+                <div className="aq-level" style={{ color: aqData.color }}>{aqData.level}</div>
+                <div className="aq-description">{aqData.description}</div>
                 <div className="aq-components">
                   <div className="aq-component">
                     <span className="component-label">PM2.5:</span>
                     <span className="component-value">
-                      {airQualityData.list?.[0]?.components?.pm2_5?.toFixed(1) || 'N/A'} μg/m³
+                      {airQualityData.list?.[0]?.components?.pm2_5?.toFixed(1) || 'N/A'} &mu;g/m&sup3;
                     </span>
                   </div>
                   <div className="aq-component">
                     <span className="component-label">PM10:</span>
                     <span className="component-value">
-                      {airQualityData.list?.[0]?.components?.pm10?.toFixed(1) || 'N/A'} μg/m³
+                      {airQualityData.list?.[0]?.components?.pm10?.toFixed(1) || 'N/A'} &mu;g/m&sup3;
                     </span>
                   </div>
                   <div className="aq-component">
-                    <span className="component-label">O₃:</span>
+                    <span className="component-label">O&#8323;:</span>
                     <span className="component-value">
-                      {airQualityData.list?.[0]?.components?.o3?.toFixed(1) || 'N/A'} μg/m³
+                      {airQualityData.list?.[0]?.components?.o3?.toFixed(1) || 'N/A'} &mu;g/m&sup3;
                     </span>
                   </div>
                 </div>
@@ -140,7 +127,6 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
             )}
           </div>
         )}
-
         {activeTab === 'uv' && (
           <div className="uv-index">
             {uvData ? (
@@ -151,12 +137,8 @@ const AdvancedWeatherCard = ({ weatherData, forecastData, airQualityData }) => {
                     {weatherData.uvi?.toFixed(1) || 'N/A'}
                   </div>
                 </div>
-                <div className="uv-level" style={{ color: uvData.color }}>
-                  {uvData.level}
-                </div>
-                <div className="uv-description">
-                  {uvData.risk}
-                </div>
+                <div className="uv-level" style={{ color: uvData.color }}>{uvData.level}</div>
+                <div className="uv-description">{uvData.risk}</div>
                 <div className="uv-recommendations">
                   <h5>Protection Recommendations:</h5>
                   <ul>
