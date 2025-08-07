@@ -39,69 +39,38 @@ const WeatherForecast = ({ forecast }) => {
   // Group forecast by day and get daily averages
   const dailyForecast = forecast.list.reduce((acc, item) => {
     const date = new Date(item.dt * 1000).toDateString();
-    
     if (!acc[date]) {
       acc[date] = {
         date: item.dt,
-        temp: [],
-        humidity: [],
+        tempMin: item.main.temp_min,
+        tempMax: item.main.temp_max,
         weather: item.weather[0],
-        wind: []
       };
+    } else {
+      acc[date].tempMin = Math.min(acc[date].tempMin, item.main.temp_min);
+      acc[date].tempMax = Math.max(acc[date].tempMax, item.main.temp_max);
     }
-    
-    acc[date].temp.push(item.main.temp);
-    acc[date].humidity.push(item.main.humidity);
-    acc[date].wind.push(item.wind.speed);
-    
     return acc;
   }, {});
 
-  const forecastDays = Object.values(dailyForecast).slice(0, 5);
+  // Get up to 7 days
+  const forecastDays = Object.values(dailyForecast).slice(0, 7);
 
   return (
-    <div className="weather-forecast glass hover-lift slide-up">
-      <h3 className="forecast-title">5-Day Forecast</h3>
-      
-      <div className="forecast-container">
-        {forecastDays.map((day, index) => {
-          const avgTemp = Math.round(day.temp.reduce((a, b) => a + b, 0) / day.temp.length);
-          const avgHumidity = Math.round(day.humidity.reduce((a, b) => a + b, 0) / day.humidity.length);
-          const avgWind = (day.wind.reduce((a, b) => a + b, 0) / day.wind.length).toFixed(1);
-          
-          return (
-            <div key={index} className="forecast-day">
-              <div className="day-header">
-                <div className="day-info">
-                  <span className="day-name">{getDayName(day.date)}</span>
-                  <span className="day-date">{getDate(day.date)}</span>
-                </div>
-                <div className="day-icon">
-                  {getWeatherIcon(day.weather.icon)}
-                </div>
-              </div>
-              
-              <div className="day-temp">
-                <span className="temp-value">{avgTemp}°</span>
-              </div>
-              
-              <div className="day-description">
-                {day.weather.description.charAt(0).toUpperCase() + day.weather.description.slice(1)}
-              </div>
-              
-              <div className="day-stats">
-                <div className="day-stat">
-                  <span className="stat-icon">💧</span>
-                  <span className="stat-value">{avgHumidity}%</span>
-                </div>
-                <div className="day-stat">
-                  <span className="stat-icon">💨</span>
-                  <span className="stat-value">{avgWind} m/s</span>
-                </div>
-              </div>
+    <div className="weather-forecast glass hover-lift slide-up" style={{background: 'none', boxShadow: 'none', padding: 0}}>
+      <div className="forecast-row">
+        {forecastDays.map((day, index) => (
+          <div key={index} className="forecast-day rounded-glass-card">
+            <div className="forecast-day-header">
+              <div className="forecast-day-name">{getDayName(day.date)}</div>
+              <div className="forecast-day-icon">{getWeatherIcon(day.weather.icon)}</div>
             </div>
-          );
-        })}
+            <div className="forecast-day-temp">
+              <span className="forecast-temp-max">{Math.round(day.tempMax)}°</span>
+              <span className="forecast-temp-min">{Math.round(day.tempMin)}°</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

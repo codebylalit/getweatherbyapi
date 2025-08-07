@@ -1,7 +1,7 @@
 {
-  "short_name": "Weather App",
-  "name": "Modern Weather App",
-  "description": "Get real-time weather updates with beautiful UI",
+  "short_name": "WeatherFlow",
+  "name": "WeatherFlow - Real-time Weather App",
+  "description": "Discover the world's weather in real-time with beautiful UI",
   "icons": [
     {
       "src": "favicon.svg",
