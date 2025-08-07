@@ -44,7 +44,7 @@ const WeatherForecast = ({ forecast }) => {
         date: item.dt,
         tempMin: item.main.temp_min,
         tempMax: item.main.temp_max,
-        weather: item.weather[0],
+        weather: item.weather[0]
       };
     } else {
       acc[date].tempMin = Math.min(acc[date].tempMin, item.main.temp_min);
@@ -57,7 +57,7 @@ const WeatherForecast = ({ forecast }) => {
   const forecastDays = Object.values(dailyForecast).slice(0, 7);
 
   return (
-    <div className="weather-forecast glass hover-lift slide-up" style={{background: 'none', boxShadow: 'none', padding: 0}}>
+    <div className="weather-forecast glass hover-lift slide-up" style={{ background: 'none', boxShadow: 'none', padding: 0 }}>
       <div className="forecast-row">
         {forecastDays.map((day, index) => (
           <div key={index} className="forecast-day rounded-glass-card">
@@ -66,8 +66,8 @@ const WeatherForecast = ({ forecast }) => {
               <div className="forecast-day-icon">{getWeatherIcon(day.weather.icon)}</div>
             </div>
             <div className="forecast-day-temp">
-              <span className="forecast-temp-max">{Math.round(day.tempMax)}°</span>
-              <span className="forecast-temp-min">{Math.round(day.tempMin)}°</span>
+              <span className="forecast-temp-max">{Math.round(day.tempMax)}&deg;</span>
+              <span className="forecast-temp-min">{Math.round(day.tempMin)}&deg;</span>
             </div>
           </div>
         ))}

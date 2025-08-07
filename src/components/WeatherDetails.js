@@ -25,7 +25,6 @@ const WeatherDetails = ({ weather }) => {
   return (
     <div className="weather-details glass hover-lift slide-up">
       <h3 className="details-title">Weather Details</h3>
-      
       <div className="details-grid">
         <div className="detail-item">
           <div className="detail-icon">🌡️</div>
@@ -35,16 +34,14 @@ const WeatherDetails = ({ weather }) => {
             <span className="detail-status">{getPressureStatus(weather.main.pressure)}</span>
           </div>
         </div>
-
         <div className="detail-item">
           <div className="detail-icon">💨</div>
           <div className="detail-content">
             <span className="detail-label">Wind Direction</span>
             <span className="detail-value">{getWindDirection(weather.wind.deg)}</span>
-            <span className="detail-status">{weather.wind.deg}°</span>
+            <span className="detail-status">{weather.wind.deg}&deg;</span>
           </div>
         </div>
-
         <div className="detail-item">
           <div className="detail-icon">🌊</div>
           <div className="detail-content">
@@ -53,7 +50,6 @@ const WeatherDetails = ({ weather }) => {
             <span className="detail-status">Atmospheric</span>
           </div>
         </div>
-
         <div className="detail-item">
           <div className="detail-icon">🏔️</div>
           <div className="detail-content">
@@ -62,7 +58,6 @@ const WeatherDetails = ({ weather }) => {
             <span className="detail-status">Surface</span>
           </div>
         </div>
-
         {weather.rain && (
           <div className="detail-item">
             <div className="detail-icon">🌧️</div>
@@ -73,7 +68,6 @@ const WeatherDetails = ({ weather }) => {
             </div>
           </div>
         )}
-
         {weather.snow && (
           <div className="detail-item">
             <div className="detail-icon">❄️</div>
@@ -84,20 +78,18 @@ const WeatherDetails = ({ weather }) => {
             </div>
           </div>
         )}
-
         <div className="detail-item">
           <div className="detail-icon">☁️</div>
           <div className="detail-content">
             <span className="detail-label">Cloud Cover</span>
             <span className="detail-value">{weather.clouds.all}%</span>
             <span className="detail-status">
-              {weather.clouds.all < 25 ? 'Clear' : 
-               weather.clouds.all < 50 ? 'Partly Cloudy' : 
-               weather.clouds.all < 75 ? 'Mostly Cloudy' : 'Overcast'}
+              {weather.clouds.all < 25 ? 'Clear' :
+                weather.clouds.all < 50 ? 'Partly Cloudy' :
+                weather.clouds.all < 75 ? 'Mostly Cloudy' : 'Overcast'}
             </span>
           </div>
         </div>
-
         <div className="detail-item">
           <div className="detail-icon">🌅</div>
           <div className="detail-content">
@@ -112,7 +104,6 @@ const WeatherDetails = ({ weather }) => {
             <span className="detail-status">Today</span>
           </div>
         </div>
-
         <div className="detail-item">
           <div className="detail-icon">🌇</div>
           <div className="detail-content">
